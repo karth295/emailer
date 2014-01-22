@@ -62,11 +62,12 @@ else:
 
     if net_id in cur_map:
       old_date = cur_map[net_id][1]
-    if date - old_date > 0:
+      if date - old_date > 0:
+          cur_map[net_id] = cur_tuple
+      else:
         cur_map[net_id] = cur_tuple
     else:
       cur_map[net_id] = cur_tuple
-
 for key in cur_map:    
   print sendMail(cur_map[key][time_index], cur_map[key][user_index], cur_map[key][days_index], cur_map[key][assign_index])
   print "Done sending mail..."
