@@ -68,8 +68,7 @@ else:
         cur_map[net_id] = cur_tuple
     else:
       cur_map[net_id] = cur_tuple
-for key in cur_map:    
-  print sendMail(cur_map[key][time_index], cur_map[key][user_index], cur_map[key][days_index], cur_map[key][assign_index])
-  print "Done sending mail..."
-  print "Error summary:"
-  print "\t" + str(errors) + " errors"
+    print sendMail(line[time_index], line[user_index], line[days_index], line[assign_index])
+print "Done sending mail..."
+print "Error summary:"
+print "\t" + str(errors) + " errors"
