@@ -2,8 +2,6 @@ from subprocess import Popen, PIPE
 import csv
 import sys
 
-import brandon_date
-
 def sendMail(timestamp, user, days, assignment):
   days = str(days)  #easy to concatenate as string
   subject = "Requested " + days + " lateday(s)"
