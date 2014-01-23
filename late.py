@@ -45,7 +45,7 @@ if len(sys.argv) != 2 or (not sys.argv[1].endswith(".csv")):
 else:
   cur_map = {}
   f = csv.reader(open(sys.argv[1]))
-  print "Sending mail now..."
+  print "Parsing file..."
   for line in f:
     if len(line) != 4:
       print "Error: malformed line:", line
@@ -60,15 +60,15 @@ else:
     #(net_id, date, homeowork number, number of latedays)
     cur_tuple = date, net_id, lateday_num, homework_num
 
-    if net_id in cur_map:
-      old_date = cur_map[net_id][1]
-      if date - old_date > 0:
+    #update the map with the current record if necessary
+    if (net_id in cur_map and homework_num == cur_map[net_id][3] and date > cur_map[nedi_id][0]) or (not net_id in cur_map):
           cur_map[net_id] = cur_tuple
-      else:
-        cur_map[net_id] = cur_tuple
-    else:
-      cur_map[net_id] = cur_tuple
-    print sendMail(line[time_index], line[user_index], line[days_index], line[assign_index])
-print "Done sending mail..."
-print "Error summary:"
-print "\t" + str(errors) + " errors"
+
+  print "Sending mail to " + str(len(cur_map)) + " people..."
+
+  #iterate through the map and send an email for each record (with latest per person)
+  for tup in cur_map.values():
+    sendMail(tup[0], tup[1], tup[2], tup[3])
+  print "Done sending mail..."
+  print "Error summary:"
+  print "\t" + str(errors) + " errors"
