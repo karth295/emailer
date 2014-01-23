@@ -60,15 +60,20 @@ else:
     #(net_id, date, homeowork number, number of latedays)
     cur_tuple = date, net_id, lateday_num, homework_num
 
-    #update the map with the current record if necessary
-    if (net_id in cur_map and homework_num == cur_map[net_id][3] and date > cur_map[nedi_id][0]) or (not net_id in cur_map):
-          cur_map[net_id] = cur_tuple
+    #sendMail(tup[time_index], tup[user_index], tup[days_index], tup[assign_index])
+    print "Called sendMail", tup
+
+    #update the 
+    if net_id in cur_map and date <= cur_map[net_id][time_index]:
+      continue
+    else:
+      cur_map[net_id] = cur_tuple
 
   print "Sending mail to " + str(len(cur_map)) + " people..."
 
   #iterate through the map and send an email for each record (with latest per person)
   for tup in cur_map.values():
-    sendMail(tup[0], tup[1], tup[2], tup[3])
+    print tup
   print "Done sending mail..."
   print "Error summary:"
   print "\t" + str(errors) + " errors"
