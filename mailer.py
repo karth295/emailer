@@ -1,4 +1,5 @@
 from bookkeeping import *
+from subprocess import Popen, PIPE
 
 def sendMail(message, subject, to):
   echoed = Popen(['echo', message], stdout=PIPE)
@@ -19,16 +20,17 @@ def sendKidMail(info):
   sendMail(message, subject, info.user);
 
 def sendStaffMail(idToInfo, homework, failure_list):
-  message = "Late days requested for " + homework + ":\n"
+  message = "Late days requested for " + homework + ":\n\n"
   for user, info in idToInfo.items():
     message += str(info) + "\n"
   if len(failure_list) > 0:
-    message += "Could not send email to these lines in the csv file:\n"
+    message += "\nCould not send email to these lines in the csv file:\n"
     for fail in failure_list:
       message += fail + "\n"
   else:
-    message += "No errors occurred while parsing the file\n"
+    message += "\nNo errors occurred while parsing the file\n"
   
   subject = "Summary of late day requests for " + homework
 
   sendMail(message, subject, "cse331-staff@cs.washington.edu")
+  #print "Called sendMail", message, subject

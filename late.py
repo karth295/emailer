@@ -36,7 +36,7 @@ for line in f:
   cur_info = bookkeeper(date, net_id, lateday_num, homework_num)
 
   sendKidMail(cur_info)
-  print "Called sendKidMail", cur_info
+  #print "Called sendKidMail", cur_info
 
   #Only keep the latest submission in the map
   if net_id in cur_map and date <= cur_map[net_id].timestamp:
