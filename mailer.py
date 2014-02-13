@@ -5,19 +5,27 @@ def sendMail(message, subject, to):
   echoed = Popen(['echo', message], stdout=PIPE)
   Popen(['mail', '-s', subject, '-r', 'cse331-staff@cs.washington.edu', to], stdin=echoed.stdout, stdout=PIPE)
 
-def sendKidMail(info):
-  days = str(info.days)  #easy to concatenate as string
-  subject = "Requested " + info.days + " lateday(s)"
-  message = """Dear """ + info.user + """,
+def summary(total):
+  string = "Summary of all requests: \n"
+  for record in total:
+    string += str(record) + "\n"
+  return string
 
-  You requested """ + info.days + """ lateday(s) for """ + info.assignment + """ at """ + info.timestamp + """. Please notify us immediately at cse331-staff@cs.washington.edu if this is incorrect.
+def sendKidMail(total, accepted):
+  days = str(accepted.days)  #easy to concatenate as string
+  subject = "Requested " + accepted.days + " lateday(s)"
+  message = """Dear """ + accepted.user + """,
 
+  You requested """ + accepted.days + """ lateday(s) for """ + accepted.assignment + """ at """ + accepted.timestamp + """. Please notify us immediately at cse331-staff@cs.washington.edu if this is incorrect.
+
+""" + summary(total) + """ 
   Warning: This email is only to inform you how many latedays you requested on the Google form. Please ensure that you actually have the number of lateday(s) you requested left, and that the requested assignment was still open for latedays at the date/time indicated.
   
   Thanks,
   CSE 331 staff"""
   
-  sendMail(message, subject, info.user);
+  sendMail(message, subject, accepted.user);
+  #print(message, subject, accepted.user);
 
 def sendStaffMail(idToInfo, homework, failure_list):
   message = "Late days requested for " + homework + ":\n\n"

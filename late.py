@@ -19,6 +19,7 @@ if len(sys.argv) != 3 or (not sys.argv[1].endswith(".csv")):
 
 target_hw = sys.argv[2]
 cur_map = {}
+total_map = {}
 f = csv.reader(open(sys.argv[1]))
 print "Parsing file..."
 for line in f:
@@ -35,14 +36,20 @@ for line in f:
     continue
   cur_info = bookkeeper(date, net_id, lateday_num, homework_num)
 
-  sendKidMail(cur_info)
-  #print "Called sendKidMail", cur_info
+  #Add to all their submissions
+  if not net_id in total_map:
+    total_map[net_id] = []
+  total_map[net_id].append(cur_info)
 
   #Only keep the latest submission in the map
   if net_id in cur_map and date <= cur_map[net_id].timestamp:
     continue
   else:
     cur_map[net_id] = cur_info
+
+print "Sending results to students"
+for kid in cur_map:
+  sendKidMail(total_map[kid], cur_map[kid])
 
 print "Sending results to course staff..."
 sendStaffMail(cur_map, target_hw, error_list)
